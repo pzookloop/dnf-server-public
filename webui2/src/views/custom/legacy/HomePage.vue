@@ -36,7 +36,7 @@ const banners = ref<BigPic[]>([
             <div class="content-box">
               <h2 style="font-size: 50px">{{ b.title }}</h2>
               <div class="btn-box">
-                <a href="https://oss.icoding.ink/.inner/dnf/download/地下城与勇士.zip" class="theme-btn btn-style-one"><span class="btn-title">下载</span></a>
+                <a href="https://pan.baidu.com/s/1re7rQ6NeMPry8Jr1aKUwzA?pwd=p2i2" class="theme-btn btn-style-one"><span class="btn-title">下载</span></a>
               </div>
             </div>
           </div>
