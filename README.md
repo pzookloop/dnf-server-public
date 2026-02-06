@@ -3,6 +3,9 @@
 ## 介绍
 所有代码均可随意查看或修改。此端前后端代码都在此仓库中, 前端在webui2目录下。
 
+配套的登录器在这里:
+https://github.com/onlyGuo/DNFLogin
+
 ## 预览
 ### 门户页
 自带一个前台页面, 页面内容可以在这个目录下更改: `webui2/src/views/custom/legacy/HomePage.vue`
