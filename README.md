@@ -1,5 +1,9 @@
 # dnf-server-public
 
+## 推广
+一个好玩的大模型聚合平台: [https://gpt.0101.run](https://gpt.0101.run)
+便宜且稳定的大模型API分发平台 [https://0101.run](https://0101.run)
+
 ## 介绍
 所有代码均可随意查看或修改。此端前后端代码都在此仓库中, 前端在webui2目录下。
 
