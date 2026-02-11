@@ -75,9 +75,14 @@ public class AccountServiceImpl implements AccountService {
                 "10403030101", account.getUid());
         byte[] bs = String2Hex.hex2tobin(data);
         // 加密计算出用户授权Key
-        String privateKey = new String(MinFieldUtil.readResource("private.key"))
+        String privateKey = new String(MinFieldUtil.readFile("data/private.key"));
+        privateKey = privateKey.replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
                 .replace("\r", "")
                 .replace("\n", "");
+//        String privateKey = new String(MinFieldUtil.readResource("private.key"))
+//                .replace("\r", "")
+//                .replace("\n", "");
         byte[] resultByte = RSATool.encryptByPrivateKey(bs, privateKey);
         return Base64.getEncoder().encodeToString(resultByte);
     }

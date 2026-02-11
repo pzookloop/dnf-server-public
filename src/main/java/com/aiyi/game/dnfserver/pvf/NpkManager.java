@@ -20,11 +20,12 @@ public class NpkManager {
 
     @PostConstruct
     public void init(){
-        File file = new File("ImagePacks2");
+        File file = new File("data/ImagePacks2");
         if (!file.exists()){
             logger.warn("Folder ImagePacks2 not found!");
+        }else{
+            NpkCoder.initialize(file.getAbsolutePath());
         }
-        NpkCoder.initialize(file.getAbsolutePath());
     }
 
     /**

@@ -27,11 +27,12 @@ public class PvfManager {
 
     @PostConstruct
     public void init(){
-        File file = new File("Script.pvf");
+        File file = new File("data/Script.pvf");
         if (!file.exists()){
             logger.warn("Script.pvf not found!");
+        }else{
+            PvfCoder.initialize(file.getAbsolutePath(), Charset.forName("Big5"));
         }
-        PvfCoder.initialize(file.getAbsolutePath(), Charset.forName("Big5"));
     }
 
     public Pvf getPvf(){
