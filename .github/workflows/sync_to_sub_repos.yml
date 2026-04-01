@@ -44,4 +44,4 @@ jobs:
           create-target-branch-if-needed: true
           target-directory: ''
           # 排除前端目录和工作流目录，保持后端纯净
-          exclude: 'webui2 .github .idea'
+          args: --exclude-directory=webui2 --exclude-directory=.github --exclude-directory=.idea
