@@ -32,12 +32,20 @@ jobs:
       # --- 2. 同步后端 ---
       - name: Prepare Backend Files
         run: |
-          # 在当前工作目录直接物理删除不需要同步给后端的文件夹
+          # 1. 创建一个平级的临时目录 (在当前工作区 /github/workspace 之外)
+          mkdir ../backend_tmp
+          
+          # 2. 将当前所有内容拷贝过去
+          cp -ra . ../backend_tmp/
+          
+          # 3. 在那个临时目录里执行删除，这样绝不会影响当前的 Git 认证环境
+          cd ../backend_tmp
           rm -rf webui2
           rm -rf .github
           rm -rf .idea
-          # 确认一下删干净了
-          ls -R
+          
+          # 4. 确认一下临时目录里现在只有后端代码了
+          ls -F
 
       # --- 3. 同步后端 (根目录排除前端) ---
       - name: Push Backend to Infinite-Reflection/dnf-gm-manager-backend
@@ -45,7 +53,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.DNF_GM_SYNC2SUBTREE }}
         with:
-          source-directory: '.'
+          source-directory: '../backend_tmp'
           destination-github-username: 'Infinite-Reflection' # 组织名作为目标所有者
           destination-repository-name: 'dnf-gm-manager-backend'
           user-email: 'pzookloop@users.noreply.github.com'
