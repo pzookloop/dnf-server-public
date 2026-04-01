@@ -28,12 +28,16 @@ jobs:
           # 如果分支不存在则创建
           create-target-branch-if-needed: true
           target-directory: ''
-      # --- 2. 准备后端临时目录 (排除前端和工作流目录) ---
-      - name: Prepare Backend Temp Directory
+
+      # --- 2. 同步后端 ---
+      - name: Prepare Backend Files
         run: |
-          rm -rf temp-backend
-          mkdir temp-backend
-          rsync -av --exclude='webui2' --exclude='.github' --exclude='.idea' ./ temp-backend/
+          # 在当前工作目录直接物理删除不需要同步给后端的文件夹
+          rm -rf webui2
+          rm -rf .github
+          rm -rf .idea
+          # 确认一下删干净了
+          ls -R
 
       # --- 3. 同步后端 (根目录排除前端) ---
       - name: Push Backend to Infinite-Reflection/dnf-gm-manager-backend
