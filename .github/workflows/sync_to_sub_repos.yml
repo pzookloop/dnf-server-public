@@ -29,36 +29,35 @@ jobs:
           create-target-branch-if-needed: true
           target-directory: ''
 
-      # --- 2. 同步后端 ---
-      # --- 2. 准备后端文件 ---
-      - name: Prepare Backend Files
-        run: |
-          # 1. 在当前目录下创建一个临时的搬运目录
-          mkdir final_backend_output
-
-          # 2. 将除了这个新文件夹以外的所有内容拷贝进去
-          # 使用 rsync 可以更优雅地排除自己
-          rsync -av . final_backend_output/ --exclude final_backend_output
-
-          # 3. 在这个搬运目录里删掉不需要的文件
-          cd final_backend_output
-          rm -rf webui2
-          rm -rf .github
-          rm -rf .idea
-          # 确认一下文件结构
-          ls -F
-
-      # --- 3. 同步后端 (根目录排除前端) ---
-      - name: Push Backend to Infinite-Reflection/dnf-gm-manager-backend
-        uses: cpina/github-action-push-to-another-repository@main
+      # --- 2. 准备并同步后端 (直接手动一把梭) ---
+      - name: Sync Backend Manually
         env:
           API_TOKEN_GITHUB: ${{ secrets.DNF_GM_SYNC2SUBTREE }}
-        with:
-          source-directory: 'final_backend_output'
-          destination-github-username: 'Infinite-Reflection' # 组织名作为目标所有者
-          destination-repository-name: 'dnf-gm-manager-backend'
-          user-email: 'pzookloop@users.noreply.github.com'
-          target-branch: 'upstream-sync'
-          # 如果分支不存在则创建
-          create-target-branch-if-needed: true
-          target-directory: ''
+        run: |
+          # 创建一个临时目录用来放后端代码
+          mkdir ../backend_final
+          
+          # 使用 rsync 排除掉前端 webui2、.github 配置和 .idea 缓存
+          # 这样剩下的就全是纯净的后端代码
+          rsync -av . ../backend_final/ \
+            --exclude='webui2' \
+            --exclude='.github' \
+            --exclude='.idea' \
+            --exclude='.git'
+          
+          cd ../backend_final
+          
+          # 重新初始化一个干净的 Git 环境
+          git init
+          git config user.name "pzookloop"
+          git config user.email "pzookloop@users.noreply.github.com"
+          
+          # 构造带 Token 的远程地址 (前端能过，这个地址后端必通)
+          REMOTE_URL="https://x-access-token:${{ secrets.DNF_GM_SYNC2SUBTREE }}@github.com/Infinite-Reflection/dnf-gm-manager-backend.git"
+          
+          git remote add origin "$REMOTE_URL"
+          git add .
+          git commit -m "chore: automated sync from upstream main ($GITHUB_SHA)"
+          
+          # 强制覆盖目标仓库的 upstream-sync 分支
+          git push origin HEAD:upstream-sync --force
