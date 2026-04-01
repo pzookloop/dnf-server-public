@@ -329,3 +329,4 @@ server{
 ### 本地调试说明
 需将Script.pvf文件放到项目根目录, 方可完整调试, 打包后, 也需要将Script.pvf于Jar包放到一起部署(打包时, 不会直将Script.pvf打包到Jar包, 要手动放到同一个目录中, 此举是方便在不重新编译的情况下快速更新Script.pvf, 更新完Pvf文件后, 需要重启).
 
+test
