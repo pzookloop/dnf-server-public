@@ -45,7 +45,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.DNF_GM_SYNC2SUBTREE }}
         with:
-          source-directory: 'temp-backend'
+          source-directory: '.'
           destination-github-username: 'Infinite-Reflection' # 组织名作为目标所有者
           destination-repository-name: 'dnf-gm-manager-backend'
           user-email: 'pzookloop@users.noreply.github.com'
