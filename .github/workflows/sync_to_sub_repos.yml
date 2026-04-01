@@ -1,0 +1,43 @@
+name: Distribute to Sub-Repos
+
+on:
+  push:
+    branches: [ main ]  # 同步原作者更新或手动 push 到 main 时触发
+  workflow_dispatch:     # 支持手动点击 Actions 页面上的按钮测试
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source (dnf-server-public)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # --- 1. 同步前端 (webui2 目录) ---
+      - name: Push Frontend to Infinite-Reflection/dnf-gm-manager-front
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.DNF_GM_SYNC2SUBTREE }}
+        with:
+          source-directory: 'webui2'
+          destination-github-username: 'Infinite-Reflection' # 组织名作为目标所有者
+          destination-repository-name: 'dnf-gm-manager-front'
+          user-email: 'pzookloop@users.noreply.github.com'
+          target-branch: 'upstream-sync'
+          target-directory: '.'
+
+      # --- 2. 同步后端 (根目录排除前端) ---
+      - name: Push Backend to Infinite-Reflection/dnf-gm-manager-backend
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.DNF_GM_SYNC2SUBTREE }}
+        with:
+          source-directory: '.'
+          destination-github-username: 'Infinite-Reflection' # 组织名作为目标所有者
+          destination-repository-name: 'dnf-gm-manager-backend'
+          user-email: 'pzookloop@users.noreply.github.com'
+          target-branch: 'upstream-sync'
+          target-directory: '.'
+          # 排除前端目录和工作流目录，保持后端纯净
+          exclude: 'webui2 .github .idea'
