@@ -27,7 +27,7 @@ jobs:
           target-branch: 'upstream-sync'
           # 如果分支不存在则创建
           create-target-branch-if-needed: true
-          target-directory: '.'
+          target-directory: ''
 
       # --- 2. 同步后端 (根目录排除前端) ---
       - name: Push Backend to Infinite-Reflection/dnf-gm-manager-backend
@@ -42,6 +42,6 @@ jobs:
           target-branch: 'upstream-sync'
           # 如果分支不存在则创建
           create-target-branch-if-needed: true
-          target-directory: '.'
+          target-directory: ''
           # 排除前端目录和工作流目录，保持后端纯净
           exclude: 'webui2 .github .idea'
